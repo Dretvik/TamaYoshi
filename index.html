@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TamaYoshi</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            background-color: #2e2e2e;
+        }
+        button{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        #app {
+            margin-top: 40px;
+            width: 400px;
+            height: 800px;
+            border: 2px solid black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;  
+            background-color: aquamarine;
+            border-radius: 20px;
+        }
+        #display {
+            margin-bottom: 40px;
+            width:300px;
+            height: 300px;
+            border: 30px solid black;
+            border-radius: 20px;
+            text-align: center;
+            background-color: white;
+        }
+        .emotions {
+            max-width: 299px;
+            max-height: 280px;
+            border-radius: 20px;
+        }
+        .buttonStyle{
+            margin-left: 20px;
+            border: 3px solid red;
+        }
+        #timeDiv {
+            font-size: 40px;
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="app"></div>
+
+    <script>
+        //Model
+         let buttonFood = "";
+         let buttonWater = "";
+         let buttonPlay = "";
+         let view = "";
+         let cycle = 60;
+         let points = "";
+         let temp = 0;
+         let activity = "";
+
+        //View
+        updateView()
+        function updateView() {
+            document.getElementById('app').innerHTML = /*HTML*/`
+            <div id="display">${view}</div>
+              <div id="buttonDiv">
+                <button id="buttonFood" class="buttonStyle" onclick="feed()">Feed</button>
+                <button id="buttonWater" class="buttonStyle" onclick="water()">Give Water</button>
+                <button id="buttonPlay" class="buttonStyle" onclick="play()">Play</button>
+                </div>
+                <div>TamaYoshi will die in: </div>
+                <div id="timeDiv">${cycle} sec</div>
+            `;
+        }
+
+        //Controller
+
+    function feed(){
+        if(activity == 1){
+            cycle += 30;
+            activity = 0;
+            imGood();   
+        } else {
+            cycle -= 10;
+        }
+    }
+
+    function water(){
+        if(activity == 2){
+            cycle += 30;
+            activity = 0;
+            imGood();   
+        } else {
+            cycle -= 10;
+        }
+    }
+
+    function play() {
+        if(activity == 3){
+            cycle += 30;
+            activity = 0;
+            imGood();   
+        } else {
+            cycle -= 10;
+        }
+    }
+
+    timer();
+    function timer(){
+        setInterval(() => {
+            cycle-=1;
+            console.log(cycle);
+            imDead();
+            updateView()
+        }, 1000);
+    }
+
+    randomChoice();
+    function randomChoice(){
+        setInterval(() => {
+            activity = Math.floor(Math.random() * 3)+1;
+            if(activity == 1){
+                view ='<img class="emotions" src="img/hungryYoshi.png">' + '<br>' +'I want food!';
+            }
+            else if (activity == 2){
+                view = '<img class="emotions" src="img/thirstyYoshi.png">' + '<br>' + 'Im thirsty';
+            }
+            else if (activity == 3){
+                view = '<img class="emotions" src="img/petYoshi.png">' + '<br>' +'I want to play';
+            }
+            console.log(activity)
+            updateView();
+            imDead();
+        },20000);
+    }
+
+    imGood();
+    function imGood(){
+        if (activity == 0){
+        view = '<img class="emotions" src="img/happyYoshi.png">' + '<br>' + 'Im good and happy!';
+        updateView();
+      }
+    }
+    function imDead() {
+        if (cycle == 0 || cycle < 0) {
+            view = '<img class="emotions" src="img/deadYoshi.png">' + '<br>' +'Im dead!!' + '<br>' + 'Refresh page to try again';
+            updateView();
+        }
+    }
+
+
+
+    </script>
+    
+</body>
+</html>
